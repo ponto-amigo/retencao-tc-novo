@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b141a" />
+  <title>Chat Story Studio V38 — Lotes de Retenção</title>
+  <link rel="stylesheet" href="styles.css?v=38" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-topbar">
+      <div class="brand-block">
+        <div class="brand-dot">CS</div>
+        <div>
+          <div class="brand-title-line"><strong>Chat Story Studio</strong><span class="version-pill">V38</span></div>
+          <span>editor de conversa simulada</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="btn ghost" id="newBtn">Novo</button>
+        <button class="btn ghost" id="importBtn">Importar</button>
+        <button class="btn ghost" id="exportBtn">Exportar JSON</button>
+        <input type="file" id="importFile" accept="application/json" hidden />
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="editor-panel">
+        <section class="panel-card">
+          <div class="panel-title">
+            <div>
+              <span class="eyebrow">CELULAR</span>
+              <h2>Aparência da tela</h2>
+            </div>
+            <span class="safe-pill">SIMULAÇÃO FIXA</span>
+          </div>
+
+          <div class="profile-row">
+            <label class="avatar-picker" for="avatarInput">
+              <img id="avatarPreview" alt="Prévia do avatar" />
+              <span id="avatarFallback">+</span>
+              <input type="file" id="avatarInput" accept="image/*" hidden />
+            </label>
+            <div class="field grow">
+              <label for="contactName">Nome do contato</label>
+              <input id="contactName" value="Açaí Dois Unidos" maxlength="40" />
+            </div>
+            <div class="field avatar-letter-field">
+              <label for="avatarLetter">Letra do avatar</label>
+              <input id="avatarLetter" value="" maxlength="1" placeholder="A" />
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="contactStatus">Status</label>
+              <input id="contactStatus" value="" placeholder="online (opcional)" maxlength="50" />
+            </div>
+            <div class="field">
+              <label for="chatDate">Data exibida</label>
+              <input id="chatDate" value="12 de março de 2026" maxlength="40" />
+            </div>
+          </div>
+
+          <div class="grid-4">
+            <div class="field">
+              <label for="deviceTime">Hora</label>
+              <input id="deviceTime" value="10:54" maxlength="5" />
+            </div>
+            <div class="field">
+              <label for="network">Rede</label>
+              <select id="network">
+                <option>5G</option>
+                <option>4G+</option>
+                <option>4G</option>
+                <option>LTE</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="batteryLevel">Bateria</label>
+              <input id="batteryLevel" type="number" min="1" max="100" value="35" />
+            </div>
+            <div class="field switch-field">
+              <label>Silencioso</label>
+              <label class="switch"><input id="mutedToggle" type="checkbox" checked /><span></span></label>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field switch-field">
+              <label>Carregando</label>
+              <label class="switch"><input id="chargingToggle" type="checkbox" checked /><span></span></label>
+            </div>
+            <div class="field switch-field">
+              <label>Mostrar criptografia</label>
+              <label class="switch"><input id="encryptionToggle" type="checkbox" checked /><span></span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="encryptionText">Texto do aviso de criptografia</label>
+            <textarea id="encryptionText" rows="4">As mensagens e ligações são protegidas com a criptografia de ponta a ponta. Somente as pessoas que fazem parte da conversa podem ler, ouvir e compartilhar esse conteúdo. Saiba mais</textarea>
+          </div>
+
+          <div class="simulation-note">
+
+            <span>A marca SIMULAÇÃO permanece visível nas imagens exportadas.</span>
+          </div>
+        </section>
+
+
+        <section class="panel-card batch-card">
+          <div class="panel-title">
+            <div>
+              <span class="eyebrow">LOTE / EXCEL / RELATÓRIO</span>
+              <h2>Gerar imagens em massa</h2>
+            </div>
+            <span class="safe-pill">PNG EM ALTA</span>
+          </div>
+
+          <p class="batch-intro">Anexe o CSV original de contratos de retenção: o sistema identifica automaticamente cada CPF + portabilidade, organiza por loja e monta as prévias. Também aceita planilhas genéricas, com variáveis como <code>{nome}</code>, <code>{empresa}</code> e <code>{numero}</code> nas mensagens.</p>
+
+          <div class="batch-actions-row">
+            <label class="btn secondary file-btn" for="batchFile">Anexar relatório CSV/Excel</label>
+            <input id="batchFile" type="file" accept=".xlsx,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
+            <a class="btn ghost model-link" href="modelo_conversas_em_massa.csv" download>Modelo CSV opcional</a>
+          </div>
+
+          <div class="batch-file-summary" id="batchFileSummary">Nenhum arquivo carregado.</div>
+          <div class="batch-columns hidden" id="batchColumns"></div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="batchFilename">Nome dos arquivos</label>
+              <input id="batchFilename" value="{contrato} - {nome} - {cpf}" placeholder="{contrato} - {nome} - {cpf}" />
+            </div>
+            <div class="field">
+              <label for="printScale">Qualidade do PNG</label>
+              <select id="printScale">
+                <option value="2" selected>2× — rápida (recomendado para centenas)</option>
+                <option value="3">3× — alta</option>
+                <option value="4">4× — máxima (mais lenta)</option>
+              </select>
+            </div>
+          </div>
+
+          <label class="batch-check"><input id="batchUseExcelMessages" type="checkbox" checked /> Usar <code>mensagem_1</code>, <code>mensagem_2</code>... do Excel quando existirem</label>
+          <label class="batch-check"><input id="batchContactFromName" type="checkbox" checked /> Usar a coluna <code>nome</code> como nome do contato</label>
+
+          <div class="batch-report-mode hidden" id="batchReportMode">
+            <strong>Relatório de retenção detectado.</strong> Uma prévia por CPF + número de portabilidade, com identificação da loja, banco, contrato e telefone.
+            <div>Gera 4 mensagens por conversa, mantendo o roteiro, o sorteio das respostas e os intervalos de horários do script Python. As respostas criadas são fictícias e ficam marcadas [SIMULAÇÃO] em cada balão; os PNGs não comprovam aceite do cliente.</div>
+          </div>
+
+          <div class="batch-buttons">
+            <button class="btn secondary" id="previewBatchBtn" disabled>Pré-visualizar 1ª conversa</button>
+            <button class="btn primary" id="generateBatchBtn" disabled>Gerar todas as imagens (ZIP)</button>
+          </div>
+
+          <div class="batch-progress hidden" id="batchProgressWrap">
+            <div class="batch-progress-top"><span id="batchProgressText">Preparando...</span><strong id="batchProgressPercent">0%</strong></div>
+            <div class="batch-progress-track"><span id="batchProgressBar"></span></div>
+          </div>
+
+          <button class="btn ghost hidden batch-cancel" id="cancelBatchBtn">Cancelar geração</button>
+
+          <div class="batch-help">
+            <strong>Como funciona:</strong> para relatórios de retenção, basta anexar o CSV. Para outros modelos, as colunas viram variáveis automaticamente. Ex.: a coluna <code>nome</code> substitui <code>{nome}</code>. Você pode montar as mensagens no próprio editor ou diretamente no Excel.
+          </div>
+        </section>
+        <section class="panel-card">
+          <div class="panel-title with-action">
+            <div>
+              <span class="eyebrow">ROTEIRO</span>
+              <h2>Mensagens da conversa</h2>
+            </div>
+            <button class="round-add" id="addMessageBtn" title="Adicionar mensagem">+</button>
+          </div>
+
+          <details class="quick-script">
+            <summary>Colar roteiro rápido</summary>
+            <div class="quick-script-body">
+              <textarea id="quickScript" rows="6" placeholder="Contato: tu ainda tá acordado?\nEu: tô kkkkk\nContato: preciso te contar uma coisa"></textarea>
+              <button class="btn secondary full" id="parseScriptBtn">Transformar em mensagens</button>
+            </div>
+          </details>
+
+          <div class="message-list" id="messageList"></div>
+        </section>
+      </aside>
+
+      <section class="stage-panel">
+        <div class="stage-toolbar">
+          <div class="toolbar-group">
+            <button class="btn primary" id="playBtn">▶ Reproduzir</button>
+            <button class="btn ghost" id="pauseBtn">Pausar</button>
+            <button class="btn ghost" id="resetBtn">Reiniciar</button>
+          </div>
+          <div class="toolbar-group">
+            <label class="toolbar-select">Velocidade
+              <select id="speedSelect">
+                <option value="0.75">0,75×</option>
+                <option value="1" selected>1×</option>
+                <option value="1.25">1,25×</option>
+                <option value="1.5">1,5×</option>
+                <option value="2">2×</option>
+              </select>
+            </label>
+            <button class="btn secondary" id="recordModeBtn">⛶ Modo gravação</button>
+            <button class="btn secondary" id="exportPrintBtn">📸 Exportar print PNG</button>
+            <button class="btn secondary" id="recordBtn">● Gravar WebM</button>
+          </div>
+        </div>
+
+        <div class="stage-wrap">
+          <div class="device-shell" id="deviceShell">
+            <div class="phone-screen" id="phoneScreen">
+              <div class="status-bar">
+                <div class="status-time" id="statusTime">10:54</div>
+                <div class="status-right">
+                  <span class="mute-icon" id="muteIcon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="m4 4 16 16"/></svg>
+                  </span>
+                  <div class="network-wrap" id="networkWrap">
+                    <div class="network-ref" id="networkRef5g" aria-hidden="true">
+                      <span class="network-ref-label">5G</span>
+                      <span class="network-ref-arrows"><i>↓</i><i>↑</i></span>
+                    </div>
+                    <div class="network-alt hidden" id="networkAltBlock">
+                      <span class="network-alt-label" id="networkLabel">5G</span>
+                    </div>
+                  </div>
+                  <span class="signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                  <span class="battery-pill" id="batteryPill">
+                    <span class="battery-left"><span class="bolt" id="batteryBolt">⚡</span></span>
+                    
+                  </span>
+                </div>
+              </div>
+
+              <header class="chat-header">
+                <button class="header-btn back-btn" aria-label="Voltar">
+                  <svg viewBox="0 0 24 24"><path d="M20 12H5"/><path d="m11 6-6 6 6 6"/></svg>
+                </button>
+                <div class="chat-avatar">
+                  <img id="stageAvatar" alt="Avatar" />
+                  <span id="stageAvatarFallback">A</span>
+                </div>
+                <div class="contact-copy">
+                  <strong id="stageContactName">Açaí Dois Unidos</strong>
+                  <span id="stageContactStatus"></span>
+                </div>
+                <div class="header-actions" aria-hidden="true">
+                  <span class="header-icon"><svg viewBox="0 0 24 24"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h8A2.5 2.5 0 0 1 17 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-8A2.5 2.5 0 0 1 4 16.5z"/><path d="m17 10 4-2.5v9L17 14z"/></svg></span>
+                  <span class="header-icon"><svg viewBox="0 0 24 24"><path d="M8.2 3.8 5.7 5.2c-.9.5-1.2 1.6-.8 2.5 2.3 5.5 5.9 9.1 11.4 11.4.9.4 2 .1 2.5-.8l1.4-2.5-4-2-1.8 2c-2.6-1.2-5-3.6-6.2-6.2l2-1.8z"/></svg></span>
+                  <span class="header-icon menu-dots"><i></i><i></i><i></i></span>
+                </div>
+              </header>
+
+              <section class="chat-area" id="chatArea">
+                <div class="chat-overlays">
+                  <div class="date-chip" id="dateChip">12 de março de 2026</div>
+                  <div class="encryption-card" id="encryptionCard">
+                    <img class="lock-icon" src="assets/lock-reference.png" alt="" aria-hidden="true" />
+                    <span id="encryptionCopy">As mensagens e ligações são protegidas com a criptografia de ponta a ponta. Somente as pessoas que fazem parte da conversa podem ler, ouvir e compartilhar esse conteúdo. <strong>Saiba mais</strong></span>
+                  </div>
+          
+                </div>
+
+                <div class="message-viewport" id="messageViewport"></div>
+
+                <div class="typing-row hidden" id="typingRow">
+                  <div class="typing-bubble"><i></i><i></i><i></i></div>
+                </div>
+              </section>
+
+              <div class="composer-screenshot-wrap">
+                <img class="composer-screenshot" src="assets/barra-inferior-transparente.png" alt="Barra inferior da conversa" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="stage-hint">Dica: no modo gravação, o editor some e fica apenas a tela vertical. O selo “CONVERSA SIMULADA” continua visível.</p>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="vendor/jszip.min.js"></script>
+  <script src="app.js?v=38"></script>
+</body>
+</html>

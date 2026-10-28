@@ -2590,6 +2590,47 @@ function randomConversationTimes() {
   const minutes = [first,first+gap1,first+gap1+gap2,first+gap1+gap2+gap3,first+gap1+gap2+gap3+gapTop];
   return minutes.map((total)=>`${String(Math.floor(total/60)).padStart(2,'0')}:${String(total%60).padStart(2,'0')}`);
 }
+
+
+function obterDataSimulacao(row) {
+  const valor = String(rowValue(row, 'data_conversa') || '').trim();
+  let data = new Date();
+
+  if (valor) {
+    const partes = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(valor);
+
+    if (!partes) {
+      throw new Error(
+        `Data inválida: "${valor}". Use DD/MM/AAAA em data_conversa.`
+      );
+    }
+
+    const dia = Number(partes[1]);
+    const mes = Number(partes[2]);
+    const ano = Number(partes[3]);
+
+    data = new Date(ano, mes - 1, dia, 12);
+
+    if (
+      data.getFullYear() !== ano ||
+      data.getMonth() !== mes - 1 ||
+      data.getDate() !== dia
+    ) {
+      throw new Error(`Data inexistente: "${valor}".`);
+    }
+  }
+
+  return {
+    curta: new Intl.DateTimeFormat('pt-BR').format(data),
+    extensa: new Intl.DateTimeFormat('pt-BR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(data)
+  };
+}
+
+
 function retentionReportToBatchRows(source) {
   const groups = new Map();
   for (let idx = 0; idx < source.length; idx++) {
@@ -2606,6 +2647,7 @@ function retentionReportToBatchRows(source) {
   const result = [];
   for (const group of groups.values()) {
     const first = group[0];
+    const dataSimulacao = obterDataSimulacao(first);
     const nome = rowValue(first, 'cliente');
     const cpf = rowValue(first, 'cpf_cliente');
     const numero = String(rowValue(first,'n_portabilidade')).replace(/\.0+$/,'');

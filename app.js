@@ -2667,7 +2667,11 @@ function retentionReportToBatchRows(source) {
     lastReply1 = reply1;
     const abertura = `${greeting}, Sr.(a) ${primeiroNomeFormatado}. Conforme conversamos anteriormente por telefone, como o(a) senhor(a) não deseja prosseguir com a portabilidade, precisamos apenas confirmar essa decisão. Na sequência, enviarei os dados da solicitação para sua conferência. Pode confirmar se posso prosseguir?`;
     // const oficial = `Sr.(a) ${nome}, com final de CPF ${finalCpf(cpf)}, conforme sua aprovação, na data de hoje ${readableDateToday()}, estamos cancelando a sua solicitação de portabilidade de número ${numero}, efetuada pelo Banco ${nomeBanco}, referente ao(s) contrato(s) final(is) ${contratoFinais}, mediante oferta de refinanciamento. O Sr.(a) confirma?`;
-    const oficial = `Sr.(a) ${nome}, com final de CPF ${finalCpf(cpf)}, conforme sua aprovação, na data de hoje ${dataSimulacao.curta}, estamos cancelando a(s) sua(s) solicitação(ões) de portabilidade do número ${numero}, efetuada(s) pelo Banco ${nomeBanco}, referente ao(s) contrato(s) final(is) ${contratoFinais}, mediante oferta de refinanciamento. O Sr.(a) confirma?`;
+    // const oficial = `Sr.(a) ${nome}, com final de CPF ${finalCpf(cpf)}, conforme sua aprovação, na data de hoje ${dataSimulacao.curta}, estamos cancelando a(s) sua(s) solicitação(ões) de portabilidade do número ${numero}, efetuada(s) pelo Banco ${nomeBanco}, referente ao(s) contrato(s) final(is) ${contratoFinais}, mediante oferta de refinanciamento. O Sr.(a) confirma?`;
+    
+    const oficial = `Sr.(a) ${nome}, com final de CPF ${finalCpf(cpf)}, conforme sua aprovação, na data de hoje ${dataSimulacao.curta}, estamos cancelando a(s) sua(s) solicitação(ões) de portabilidade de número(s) final(is) ${numero}, efetuada(s) pelo Banco ${nomeBanco}, referente ao(s) contrato(s) final(is) ${contratoFinais}, mantendo-o(s) junto ao QI Sociedade de Crédito S.A.`;
+
+    
     result.push({
       ...first,
       nome, cpf, contato: telefone || 'Contato', avatar_letra: nome.slice(0,1).toUpperCase(),
